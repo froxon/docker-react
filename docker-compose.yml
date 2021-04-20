@@ -1,0 +1,37 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment: 
+      - CHOKIDAR_USEPOLLING=true # esto es para que funcione la notificación de cambios de windows al contenedor
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: npm run start
+    deploy:
+      restart_policy:
+        condition: any
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment: 
+      - CHOKIDAR_USEPOLLING=true # esto es para que funcione la notificación de cambios de windows al contenedor
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: npm run test -- --watch # para que vigile los cambios
+    deploy:
+      restart_policy:
+        condition: any
+  final:
+    build: . # esto va sobre el Dockerfile normal, así que no hay que hacer nada aquí
+    ports:
+      - "3002:80"
+    deploy: # Este no necesita command ni volumes
+      restart_policy:
+        condition: any
