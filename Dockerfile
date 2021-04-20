@@ -13,5 +13,5 @@ RUN npm run build
 # ojo al COPY --from
 FROM nginx
 COPY --from=builder /app/build /usr/share/nginx/html
-
+# 
 # Este contenedor ya arranca nginx, por lo que no es necesario hacer un CMD
