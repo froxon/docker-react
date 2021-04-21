@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> Cambio instantáneo con CHOKIDAR2!!
+          Edit <code>src/App.js</code> Esto está cambiado en la rama "feature". Cambio instantáneo con CHOKIDAR2!!
         </p>
         <a
           className="App-link"
