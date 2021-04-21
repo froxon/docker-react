@@ -1,0 +1,26 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  # Aquí es importante tagear la imagen (opción -t) para después poder referirnos a ella
+  # El tag puede ser cualquiera, pero la convención es útil.
+  - docker build -t froxon/docker-react -f Dockerfile.dev .
+
+# Todo lo necesario para arrancar los test
+script:
+  # CI=true para que cuando acabe de ejecutar los test salga (solo los ejecute una vez)
+  - docker run -e CI=true froxon/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-central-1"
+  app: "docker-react"
+  end: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-eu-central-1-325777961928" # Esto es como un pequeño disco duro en S3.
+  bucket_path: "docker-react" # esto es como una carpeta dentro del disco s3 
+  on:
+    branch: master # O sea, "Travis: despliega la aplicación cuando toquemos la rama master"
+  acces_key_id: $AWS_ACCESS_KEY # Esto viene de una variable de entorno de Travis para no publicarlo en github
+  secret_access_key: 
+    secure: "$AWS_SECRET_KEY" # Esto también
